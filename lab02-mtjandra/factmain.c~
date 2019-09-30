@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+/*
+ * Calls the fact.s assembly function and prints the result. Takes 
+ * a single integer command-line argument to pass to the factorial
+ * function. 
+ */
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        return 1;
+    }
+}

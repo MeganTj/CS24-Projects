@@ -1,0 +1,23 @@
+Answers to Practice Problem 3.6, CS:APP3e pp.192-193
+----------------------------------------------------
+leaq 6(%rax), %rdx		Result: x+6
+
+leaq (%rax, %rcs), %rdx		Result: x+y
+
+leaq (%rax, %rcx, 4), %rdx	Result: 4*y+x
+Explanation: The value at rcx is multiplied by a constant, 4, and then added to the value at rax
+
+leaq 7(%rax, %rax, 8), %rdx    	Result: 9*x+7
+Explanation: The value at rax is multiplied by 8 and then added to the value at rax. Then, 7 is add to the new value
+
+leaq 0xA(, %rcx, 4), %rdx     	Result: 4*y+10
+Explanation: The value at rcx is multiplied by 4 and is added to 10, as 0xA is a hexadecimal value.
+
+leaq 9(%rax, %rcx, 2), %rdx	Result: 2*y+x+9
+Explanation: The value at rcx is multiplied by 2 and addeded to the value at rax. Then, 9 is added to the new value
+
+
+
+
+
+

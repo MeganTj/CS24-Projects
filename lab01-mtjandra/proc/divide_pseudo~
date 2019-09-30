@@ -1,0 +1,13 @@
+SUB R6, R6, R6  #Set quotient equal to 0
+SUB R7, R7, R7  #Set remainder equal to 0
+ADD R7, R0, R7  #Set remainder eqaul to dividend
+WHILE:
+	SUB R7, R1, R7  #Subtract remainder from divisor
+IF:
+	BNZ ..., SKIP
+	INCR R6, R6  #Increment quotient
+	BNZ ..., WHILE
+SKIP
+
+ADD R7, R1, R7  #Add the divisor to the remainder
+#Remainder is in register 7 and quotient is in register 6

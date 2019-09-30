@@ -1,0 +1,8 @@
+Expression:  n = n & (n - 1)
+----------------------------
+The expression changes the rightmost 1 bit of n to a 0 bit. 
+
+It works because for n-1, the bit at the position of the rightmost 1 bit of n is now a 0. Thus, the bitwise-and operation removes the rightmost 1 bit of n. 
+
+It is faster as it does not require shift operations. 
+

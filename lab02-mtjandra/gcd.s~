@@ -1,0 +1,6 @@
+	# The gcd function recursively computes the GCD of two non-negative
+	# numbers using Euclid's algorithm.
+
+	.globl gcd
+gcd:
+	

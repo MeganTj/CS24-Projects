@@ -1,0 +1,8 @@
+0009	# The dividend, 9
+0010    # The divisor, 16
+0000    # A constant, 0
+8000	# A constant, a mask
+ffff	# Stores an intermediate value
+ffff	# Stores an intermediate value
+ffff	# The quotient
+ffff	# The remainder

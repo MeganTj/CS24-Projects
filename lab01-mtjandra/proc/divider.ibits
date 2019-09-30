@@ -1,0 +1,18 @@
+bb6    #	Set quotient equal to 0
+bff    #	Set remainder equal to 0
+3c7    #	Set remainder equal to dividend
+649    #	Invert divisor
+1649    #	Increment divisor
+3cc    #	Begin loop (5). Subtract divisor from remainder, store in first intermediate
+fe5    #	XOR on remainder and intermediate, store in second intermediate
+317    #	Set remainder to first intermediate.
+235d    #	AND on second intermediate and mask and store result in intermediate
+2b4c    #	Exit out of loop
+17b6    #	Increment quotient
+2ac5    #   Return to the beginning of the loop
+1695    #	End loop (12). Produce 1 by incrementing 0, store in intermediate.
+a69    #	Convert divisor back to binary, first subtract 1
+649    #	Then invert divisor
+3cf    #	Add the divisor to the remainder
+3dff    #Done
+ffffffff    

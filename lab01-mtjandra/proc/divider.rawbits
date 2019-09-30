@@ -1,0 +1,18 @@
+0010 1 110 110 110	#	Set quotient equal to 0
+0010 1 111 111 111	#	Set remainder equal to 0
+0000 1 111 000 111  #	Set remainder equal to dividend
+0001 1 001 001 001  #	Invert divisor
+0101 1 001 001 001  #	Increment divisor
+0000 1 111 001 100  #	Begin loop (5). Subtract divisor from remainder, store in first intermediate
+0011 1 111 100 101  #	XOR on remainder and intermediate, store in second intermediate
+0000 1 100 010 111  #	Set remainder to first intermediate.
+1000 1 101 011 101  #	AND on second intermediate and mask and store result in intermediate
+1010 1 101 001100 	#	Exit out of loop
+0101 1 110 110 110 	#	Increment quotient
+1010 1 011 000101 	#   Return to the beginning of the loop
+0101 1 010 010 101 	#	End loop (12). Produce 1 by incrementing 0, store in intermediate.
+0010 1 001 101 001	#	Convert divisor back to binary, first subtract 1
+0001 1 001 001 001 	#	Then invert divisor
+0000 1 111 001 111 	#	Add the divisor to the remainder 
+1111 0 111 111 111 	#	Done
+

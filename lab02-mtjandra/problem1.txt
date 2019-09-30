@@ -1,0 +1,5 @@
+What does the assembly code do?
+-------------------------------
+Sets the contents of rax to M[16+rbp], or the quadword at memory location 16 added to the address of rbp. Multiplies a constant 3 to the contents of rax. It then adds 12 to the the contents of rax and multiplies the value at rax with M[16+rbp], with the results stored in rax. Then the contents of rax is subtracted by 17.
+
+

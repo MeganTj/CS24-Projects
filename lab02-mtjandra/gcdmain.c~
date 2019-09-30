@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* 
+ * The gcd assembly function defined in gcd.s. Computes
+ * the gcd of two non-negative integers.
+ */
+extern int gcd(int x, int y);
+
+/*
+ * Calls the fact.s assembly function and prints the result. Takes 
+ * a single integer command-line argument to pass to the factorial
+ * function. 
+ */
+int main(int argc, char *argv[]) {
+    int arg;
+    
+    if (argc != 2) {
+        fprintf(stderr, "Number of command-line arguments must be 1. \n");
+        return 1;
+    }
+    arg = atoi(argv[1]);
+    if (arg < 0) {
+        fprintf(stderr, "The command-line argument must be non-negative. \n");
+        return 1;
+    }
+    printf("%d\n", fact(arg));
+}

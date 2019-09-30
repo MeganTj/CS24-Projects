@@ -1,0 +1,13 @@
+Part A:
+-------
+These results are different because after every addition operation, rounding is applied to the exact result. The second approach, adding in order of decreasing magnitude, is the most accurate. This minimizes the effect of rounding as fewer of the addition results would overflow past the floating points' limit of precision. This is because we are adding numbers that are closer in magnitude to each other. We are also adding smaller numbers, which is preferable as denormalized numbers allow floating points to represent numbers near 0 with greater precision.   
+
+Inputs with large positive exponents would cause this approach to exhibit large errors. A large data set would also worsen the accuracy, because the more addition operations, the more rounding occurs. 
+
+
+Part B:
+-------
+The pair-wise summation is a more accurate method as it recursively breaks the sequence into two halves, sums each half, and adds the two sums. This means that the program does the arithmetic operation fewer times, approximately log(n) times instead of n times. Thus, the roundoff error grows more slowly.
+
+
+

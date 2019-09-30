@@ -1,0 +1,29 @@
+Answer to Problem 3.63, CS:APP3e pp.314-315
+-------------------------------------------
+Before the switch statement, n is subtracted by 60. n is compared to 5 (subtracts 5 from n and updates flags). Jumps to line 17 if n > 5. n is multiplied by 8 since each word in the jump table is 8 bytes long and added to the address of jump table to it to go to a switch case. 
+
+We also know that result is the return value and is the value at the register rax.
+
+case 60: /* corresponds to index 0 in the jump table */
+case 62: /* corresponds to index 2 in the jump table */
+     result = x * 8;  /*  Copies x times 8 to rax. */
+     break; 
+
+case 63: /* index 3 in the jump table */
+     result = x;  /*  Moves x to rax. */
+     result = (result >> 3) || (result & (1 << 31));	/* Shifts result three to the right (arithmetic shift). */
+     break;
+
+case 64: /* index 4 in the table */
+     result = x << 4;	/*  Moves x to rax and shifts result four to the left (multiplies result by 16. */
+     result = result - x; /* Subtracts result by x. */
+     x = result;	 /* Moves result to rdi. */
+     /* Fall through */
+
+case 65:
+     x *= x;	/* Multiplies x by itself. */
+     /* Fall through */
+
+default:
+    result = 75 + x;	/* Copies 75 + rdi to rdx. */
+	
