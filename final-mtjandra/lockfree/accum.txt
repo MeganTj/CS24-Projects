@@ -1,0 +1,7 @@
+2.4
+===
+A lock-free implementation. It is possible for an accumulator-thread to take
+an unbounded number of steps because if other threads continue interrupting
+and adding to accum, the thread would be forced to wait an unlimited number
+of times until accum stops being updated by other threads in between calls to
+compare and swap.

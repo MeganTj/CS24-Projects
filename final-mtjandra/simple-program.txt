@@ -1,0 +1,74 @@
+4.1
+===
+The process control block (PCB) is set up. It contains the process ID, parent
+and child process IDs, information about resources, and register/memory state
+of the process when not running. The kernel manages the mapping of process IDs
+to PCB's and setting up the PCB. The context of the process must also be set
+up.
+
+This includes the current state of all general-purpose registers and
+floating-point register, the rip, rsp, and rbp registers, rflags, as well as
+the program's in-memory state. There are also resources to be initialized.
+This context information is stored in the process state vector, which specifies
+the CPU state and CPU number in addition to memory and resources information.
+The PCB includes the current status for scheduling the process, such as
+running, ready, blocked, or suspended so that the scheduler knows how to handle
+the newly created process.
+
+4.2
+===
+The scheduler must determine which process to run first and for how long. When
+it has decided, context-switching occurs and the control process takes over,
+which runs in kernel mode. The current process is interrupted and the kernel
+is invoked. The kernel saves the process' context, and restores the context
+of the process about to be run. Because the new process is not in
+virtual memory, the context of the process is read from disk into a physical
+page frame. A virtual page corresponds to the physical page frame, and the
+virtual page number is stored in a page table. If needed, the kernel evicts a
+page. Then, the kernel cleans up the current process' virtual memory state
+and loads the process' contents when execve() is invoked.
+
+The kernel loads in private memory areas, user stack and heap, shared memory
+areas, from disk. The kernel sets the process' program counter to the entry
+point and also maps some of its own code and data into each process' memory.
+
+4.3
+===
+The program reads instructions starting from the entry point, updating rip
+after each instruction. The logical control flow of the program is represented
+as a series of program counter values corresponding with objects in the
+program's executable object file or shared objects linked into the program. As
+the program executes, the virtual memory system swaps in necessary pages, such
+as program text, data, shared library code. It sets a pointer to an invalid
+address (usually below mapped memory) to represent NULL. The printf statement
+is called by reading the function from the shared library page. When it tries
+to access the value of p, the system realizes that the pointer is pointing to
+unmapped memory.
+
+4.4
+===
+The exceptional behavior is dereferencing a NULL pointer. When the processor
+detects that an event has occurred, it determines the corresponding exception
+number k. It then triggers the exception by making an indirect procedure call
+through entry k in the exception table corresponding to the appropriate
+handler. k is an index into the exception table. The processor pushes the
+return address, some additional processor state to restart the interrupted
+program, and the user stack onto the kernel's stack. The fault generated is
+the general protection fault. Now that the hardware has triggered the
+exception, the rest is done in software by the fault handler. The handler
+realizes that it cannot correct the error since the program is attempting to
+reference an undefined area of virtual memory, so it returns to the abort
+routine in the kernel that terminates the program by sending it a SIGSEGV
+signal.
+
+4.5
+===
+When the program is ready to terminate, it calls back to the kernel so that
+the kernel can inform the process' parent. The kernel sends a SIGCHLD signal
+to its parent, which can reap the process. The process receives a signal whose
+default action is to terminate. If the process dies but still has
+children, init becomes the parent of the orphaned children and reaps any
+zombie children. The status of the terminated process changes to reflect that
+it has terminated, and the scheduler chooses another process to load and run,
+such as that of the command shell.
+

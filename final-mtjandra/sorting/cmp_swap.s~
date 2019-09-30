@@ -1,0 +1,10 @@
+
+	.globl __sthread_lock
+__sthread_lock:
+       # Sets the return value to scheduler_lock. Sets scheduler_lock to 1.
+	   # XOR the return value with 1 to return the opposite of the old
+	   # scheduler_lock value.
+	   movl   $0x1, %eax
+	   xchg   scheduler_lock(%rip), %eax
+	   xor    $0x1, %eax
+	   ret

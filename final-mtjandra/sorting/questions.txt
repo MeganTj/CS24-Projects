@@ -1,0 +1,90 @@
+Q 1.2:
+The records approach is the slowest because it compares and moves 
+128 bytes of memory. Retrieving one element from a cache would require at
+least two accesses, since a block of memory can hold at most 64 bytes.
+Thus, copying 128 bytes of memory and swapping is expensive, as each
+element requires two cache hits. It is also more expensive to transfer
+128 bytes of data from DRAM to the caches or to transfer in between
+caches.
+
+The record-info approach is the second fastest as it only moves 16 bytes
+of memory. This means that accessing the record info of a cache only
+requires one cache hit, in contrast to the records approach. Moving
+elements becomes less expensive due to the representation of a record
+in 16 bytes, instead of the full 128 bytes. The abstraction also makes
+good use of spatial locality as nearby elements of the record info array
+are cached, so some record info may already be in the cache when the quicksort
+algorithm accesses them for the first time. Making a comparison between
+two elements may require a pointer dereference, but if the comparison
+can be done using key prefixes, the record-info approach is faster than
+the records approach as it compares 8 bytes as opposed to 32 bytes.
+
+The record-ptrs approach is the fastest since it only moves 8 bytes of data,
+which lowers the cost of moving elements. This is due to the abstraction of
+representing elements in 8 bytes instead of 128 bytes. The array of pointers
+also has good spatial locality, so caching makes accessing the pointers
+themselves relatively inexpensive. These factors make up for the extra costs
+of having to make an additional pointer dereference.
+
+Q 1.3:
+We can approximate N to be the number of elements it takes to fill up the L3
+cache, since it holds cache lines retrieved from memory, and L1 and L2 hold
+cache lines retrieved from the level above them. We can calculate the total
+number of blocks in L3 by dividing the total number of bytes it can hold by
+the size of a block, 64 bytes: (4 * 1.049 * 10^6)/64 = 65562 blocks.
+Dividing the total number of blocks by 3 gives us N = 21852 elements, assuming
+that storing an element takes up three cache blocks, since at least 2 are
+required to store 128 bytes and the 8 byte pointer goes into another block.
+We are assuming the best case for the 128 byte record, that it fits perfectly
+in two 64 byte blocks, and the worst case for the 8 byte pointers, that only
+one of them occupies an entire block by itself. Reality is in between the best
+cases and worst cases for the caching of records and pointers, so the above
+seems to be a reasonable assumption.
+
+L seems to be 35000. We might expect to see the change between M and L because
+when blocks of data are beginning to be evicted, they are evicted from the
+higher level caches, L1 and L2. Thus, it requires more time for data to be
+transferred from DRAM to these caches, as opposed to data transfer between
+DRAM and L3. When the L1 and L2 caches begin to fill up with newer elements,
+blocks are transferred between levels that are closer to each other, resulting
+in less dramatic increases in average clocks per element.
+
+Q 1.4:
+The record-info method does better because it does not always compare the
+actual 32 byte keys and thus does not dereference pointers as often. This
+is critical because as the number of elements increases, spatial locality
+decreases as it becomes more likely that the memory where a pointer is stored
+is far away from the area where the actual record is stored. Also, the
+record-info method often only needs to replace 16 byte record info stored in
+caches and not the entire 128 byte record, if the key prefix is sufficient to
+do comparisons. This makes evicting and caching new elements much more
+efficient when the cache is filling up.
+
+Q 1.5:
+Both the record-ptrs and record-info methods access the actual record when
+comparing entire keys. However, while record-ptrs always make the 32 byte
+comparisons and dereferences the pointer to the record, record-info makes
+makes 8 byte prefix accesses. This takes advantage of spatial locality, as
+the prefix is stored as a character array with each element of the array
+accessed in sequence. It does not always need to access another area of
+memory to complete its comparision. As mentioned in Q 1.2, what made
+record-ptrs faster initially was its efficiency in moving elements, since
+only 8 bytes had to be swapped, whereas what makes it slow at greater N is
+the high cost of comparing two elements due to poor spatial locality with
+the locations of pointers and the locations of records. Furthermore, in Q 1.2,
+record-ptrs had the advantage in using the cache  efficiently, since both 8
+byte pointers and records could be cached at small N. However, at higher N,
+more cache misses occur, resulting in 128 bytes of data always being evicted
+and replaced, as opposed to 16 bytes for record-info when a full key comparison
+is not needed. The records approach still has the high costs of moving 128
+bytes of data but at least maintains spatial locality, since the records are
+stored in a single array and no pointer dereferences are required.
+
+Q 1.6:
+Some possible explanations are the differences between the computers on which
+the tests are run. The second trial run may have been run on a computer that
+is also running other processes, such as web browsers, games, etc, which will
+interfere with results. The hardware specs of the computers may also be
+different, or one computer was plugged into power while the other was not.
+
+

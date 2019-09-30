@@ -1,0 +1,54 @@
+3.1
+===
+The value of counter would be printed ten times. This is because at i = 0,
+a child process is created, and both the parent and the child print. Then,
+when i = 1, the parent and the child call fork(), creating two more child
+processes. At this time, there are four processes running, and all four print.
+On exiting the for loop, the four processes print again. 2 + 4 + 4 = 10.
+
+
+3.2
+===
+The value of counter is 1. This is because both the parent and child
+increment counter by 1. Since the two processes have private address spaces,
+the incrementing by the parent or child does not impact the value of counter
+of the other process. 
+
+
+3.3
+===
+The value of counter is 2. All processes will have counter = 2. This is
+because the address space of a child and parent after forking are identical.
+All processes then perform the same incrementation after the forks.
+
+
+3.4
+===
+The output is that the value of counter is printed three times. The first is
+when its value is 1 and then next two times are when its value is 3. The output
+does not vary. If the parent process runs first, then it waits for the child to
+terminate, which will lead to the same result as the child running first.
+
+The child registers handler2, and calls kill() with the parent's ID. This
+results in handler1 being called, and the parent is forced to receive the
+SIGUSR1 signal. The parent's counter is incremented by 1 and printed. Before
+the handler finishes, the parent calls kill() on the child, and the signal
+is handled by handler2. The child's counter is incremented by 3, and this value
+is printed before the child terminates by exiting. As the signal handler has
+finished executing, control passes back to the next instruction. The parent
+reaps the child since the child has terminated, and the parent's counter is
+incremented from 1 to 3, so another 3 is printed before the parent terminates.
+
+
+3.5
+===
+The second (01342), third (03142), and the fifth (03412) can be produced.
+We know that 0 is always printed. When the parent process runs, it prints 1
+and then waits until the child process is finished. After the child process is
+done, the parent prints 2, so 2 must always be the last number printed, which
+is why the fourth output is not possible. When the child process runs, it
+prints 3 and then 4. It cannot print 4 before 3 since its instructions cannot
+be out of order. Thus, the first output is not possible. The third and the
+fifth are possible since the parent's instructions can be interleaved with
+the child's before the parent calls wait.
+
